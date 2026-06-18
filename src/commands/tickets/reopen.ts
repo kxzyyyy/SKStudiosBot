@@ -1,0 +1,54 @@
+import { SlashCommandBuilder } from 'discord.js';
+import { TicketService } from '../../services/tickets/TicketService.js';
+import { requireStaff } from '../../utils/permissions.js';
+import { createSuccessEmbed, createErrorEmbed } from '../../utils/embeds.js';
+import logger from '../../utils/logger.js';
+
+export default {
+  data: new SlashCommandBuilder()
+    .setName('reopen')
+    .setDescription('Reopen a closed ticket'),
+
+  async execute(interaction: any) {
+    // Check if user has staff permissions
+    const hasPermission = await requireStaff(interaction);
+    if (!hasPermission) return;
+
+    await interaction.deferReply();
+
+    try {
+      const ticketService = new TicketService();
+
+      // Get the ticket
+      const ticket = await ticketService.getTicketByChannelId(interaction.channelId);
+      
+      if (!ticket) {
+        await interaction.editReply({
+          embeds: [createErrorEmbed('Error', 'This channel is not a ticket.')]
+        });
+        return;
+      }
+
+      if (ticket.status !== 'closed') {
+        await interaction.editReply({
+          embeds: [createErrorEmbed('Error', 'This ticket is not closed.')]
+        });
+        return;
+      }
+
+      // Reopen the ticket
+      await ticketService.reopenTicket(interaction.channelId);
+
+      await interaction.editReply({
+        embeds: [createSuccessEmbed('Ticket Reopened', `Ticket #${ticket.ticketNumber} has been reopened.`)]
+      });
+
+      logger.info(`Ticket #${ticket.ticketNumber} reopened by ${interaction.user.tag}`);
+    } catch (error) {
+      logger.error('Error reopening ticket:', error);
+      await interaction.editReply({
+        embeds: [createErrorEmbed('Error', 'Failed to reopen ticket.')]
+      });
+    }
+  }
+};

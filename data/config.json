@@ -1,0 +1,18 @@
+{
+  "ticketCategoryId": "1516558818870300692",
+  "transcriptChannelId": "1516558781603905577",
+  "reviewChannelId": "1516551835299745992",
+  "staffRoleId": "1516561248106320092",
+  "ticketPanelChannelId": "1516551600704065708",
+  "closedTicketCategoryId": "1516976266916397107",
+  "developers": [
+    {
+      "name": "Kxzy",
+      "id": "1305213598867652670"
+    },
+    {
+      "name": "Sefonic",
+      "id": "1437856155849199616"
+    }
+  ]
+}

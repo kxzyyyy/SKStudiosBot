@@ -1,0 +1,30 @@
+{
+  "name": "skstudiosbot",
+  "version": "1.0.0",
+  "description": "Production-ready Discord bot for ticket management, reviews, and embed building",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "watch": "tsx watch src/index.ts"
+  },
+  "keywords": ["discord", "bot", "tickets", "reviews"],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dayjs": "^1.11.21",
+    "discord-html-transcripts": "^3.2.0",
+    "discord.js": "^14.26.4",
+    "dotenv": "^17.4.2",
+    "winston": "^3.19.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
