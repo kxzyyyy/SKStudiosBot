@@ -10,7 +10,6 @@ export default {
     .setDescription('Claim the current ticket'),
 
   async execute(interaction: any) {
-    // Check if user has staff permissions
     const hasPermission = await requireStaff(interaction);
     if (!hasPermission) return;
 
@@ -19,7 +18,6 @@ export default {
     try {
       const ticketService = new TicketService();
 
-      // Get the ticket
       const ticket = await ticketService.getTicketByChannelId(interaction.channelId);
       
       if (!ticket) {
@@ -50,7 +48,6 @@ export default {
         return;
       }
 
-      // Claim the ticket
       await ticketService.claimTicket(interaction.channelId, interaction.user.id);
 
       await interaction.editReply({

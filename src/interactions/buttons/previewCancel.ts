@@ -9,7 +9,6 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     try {
-      // Delete the preview message
       await interaction.message.delete();
 
       await interaction.editReply({

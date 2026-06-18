@@ -4,19 +4,11 @@ import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import logger from '../../utils/logger.js';
 
-/**
- * Service for generating and managing ticket transcripts
- */
 export class TranscriptService {
-  /**
-   * Generate transcript from a channel
-   */
   async generateTranscript(channel: TextChannel): Promise<Buffer> {
     try {
-      // Fetch messages and filter out ones with components that cause React errors
       const messages = await channel.messages.fetch({ limit: 100 });
       const filteredMessages = messages.filter(msg => {
-        // Filter out messages with components (buttons, select menus, modals)
         return !msg.components || msg.components.length === 0;
       });
 
@@ -25,7 +17,6 @@ export class TranscriptService {
         filename: `transcript-${channel.id}.html`,
         saveImages: false,
         poweredBy: false,
-        // Use filtered messages to avoid React rendering errors
         messages: filteredMessages,
         limit: -1,
         minify: false
@@ -39,9 +30,6 @@ export class TranscriptService {
     }
   }
 
-  /**
-   * Save transcript to file
-   */
   async saveTranscript(transcript: Buffer, ticketNumber: number): Promise<string> {
     const filename = `ticket-${ticketNumber}-${Date.now()}.html`;
     const filepath = join('./transcripts', filename);
@@ -56,17 +44,11 @@ export class TranscriptService {
     }
   }
 
-  /**
-   * Generate and save transcript in one operation
-   */
   async generateAndSave(channel: TextChannel, ticketNumber: number): Promise<string> {
     const transcript = await this.generateTranscript(channel);
     return await this.saveTranscript(transcript, ticketNumber);
   }
 
-  /**
-   * Send transcript to archive channel
-   */
   async sendToArchiveChannel(
     transcript: Buffer, 
     archiveChannel: TextChannel, 
@@ -79,7 +61,7 @@ export class TranscriptService {
     try {
       const openDate = new Date(openTime);
       const closeDate = new Date(closeTime);
-      const duration = Math.floor((closeDate.getTime() - openDate.getTime()) / 1000 / 60); // minutes
+      const duration = Math.floor((closeDate.getTime() - openDate.getTime()) / 1000 / 60);
 
       const embed = {
         title: `📄 Ticket #${ticketNumber} Transcript`,

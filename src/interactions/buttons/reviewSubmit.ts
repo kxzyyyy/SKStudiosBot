@@ -10,12 +10,10 @@ export default {
     try {
       const userId = interaction.user.id;
       
-      // Get the selected values from the temporary storage
       const selections = reviewSelections.get(userId);
       const serviceType = selections?.serviceType;
       const developer = selections?.developer;
 
-      // Validate that both service and developer are selected
       if (!serviceType) {
         await interaction.reply({
           embeds: [createErrorEmbed('Error', 'Please select a service type.')],
@@ -32,10 +30,8 @@ export default {
         return;
       }
 
-      // Clear the selections after use
       reviewSelections.delete(userId);
 
-      // Create the review modal with pre-filled values
       const modal = new ModalBuilder()
         .setCustomId('reviewModal')
         .setTitle('Leave a Review');

@@ -12,7 +12,6 @@ export default {
     .setDescription('Close the current ticket'),
 
   async execute(interaction: any) {
-    // Check if user has staff permissions
     const hasPermission = await requireStaff(interaction);
     if (!hasPermission) return;
 
@@ -23,7 +22,6 @@ export default {
       const transcriptService = new TranscriptService();
       const configService = new ConfigService();
 
-      // Get the ticket
       const ticket = await ticketService.getTicketByChannelId(interaction.channelId);
       
       if (!ticket) {
@@ -40,11 +38,9 @@ export default {
         return;
       }
 
-      // Generate transcript
       const channel = interaction.channel;
       const transcriptPath = await transcriptService.generateAndSave(channel, ticket.ticketNumber);
 
-      // Get transcript archive channel
       const transcriptChannelId = await configService.getTranscriptChannelId();
       const transcriptChannel = interaction.guild?.channels.cache.get(transcriptChannelId);
 
@@ -61,14 +57,12 @@ export default {
         );
       }
 
-      // Close the ticket
       await ticketService.closeTicket(interaction.channelId, transcriptPath);
 
       await interaction.editReply({
         embeds: [createSuccessEmbed('Ticket Closed', `Ticket #${ticket.ticketNumber} has been closed. Transcript saved.`)]
       });
 
-      // Delete the channel after a short delay
       setTimeout(async () => {
         try {
           await channel.delete();

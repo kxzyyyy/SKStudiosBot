@@ -9,7 +9,6 @@ export default {
 
   async execute(interaction: any) {
     try {
-      // Create the modal
       const modal = new ModalBuilder()
         .setCustomId('embedModal')
         .setTitle('Create Embed');

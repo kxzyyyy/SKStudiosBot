@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "ticketNumber": 1,
+    "userId": "1305213598867652670",
+    "channelId": "1516987922962714644",
+    "status": "closed",
+    "claimedBy": null,
+    "openTime": "2026-06-18T02:08:18.472Z",
+    "closeTime": "2026-06-18T02:08:31.164Z",
+    "transcriptPath": null,
+    "serviceType": "🤖 Custom Discord Bot"
+  },
+  {
+    "ticketNumber": 2,
+    "userId": "1305213598867652670",
+    "channelId": "1516989915898974451",
+    "status": "closed",
+    "claimedBy": "1305213598867652670",
+    "openTime": "2026-06-18T02:16:13.545Z",
+    "closeTime": "2026-06-18T02:16:22.590Z",
+    "transcriptPath": null,
+    "serviceType": "🤖 Custom Discord Bot"
+  }
+]

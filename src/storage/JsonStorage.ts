@@ -3,10 +3,6 @@ import { existsSync } from 'fs';
 import { z } from 'zod';
 import logger from '../utils/logger.js';
 
-/**
- * Generic JSON storage class for managing data files
- * Provides CRUD operations with type safety using Zod schemas
- */
 export class JsonStorage<T> {
   private filePath: string;
   private schema: z.ZodSchema<T>;
@@ -16,9 +12,6 @@ export class JsonStorage<T> {
     this.schema = schema;
   }
 
-  /**
-   * Read data from JSON file
-   */
   async read(): Promise<T | null> {
     try {
       if (!existsSync(this.filePath)) {
@@ -29,7 +22,6 @@ export class JsonStorage<T> {
       const data = await readFile(this.filePath, 'utf-8');
       const parsed = JSON.parse(data);
       
-      // Validate with Zod schema
       const validated = this.schema.parse(parsed);
       return validated;
     } catch (error) {
@@ -38,12 +30,8 @@ export class JsonStorage<T> {
     }
   }
 
-  /**
-   * Write data to JSON file
-   */
   async write(data: T): Promise<boolean> {
     try {
-      // Validate with Zod schema before writing
       const validated = this.schema.parse(data);
       
       await writeFile(this.filePath, JSON.stringify(validated, null, 2), 'utf-8');
@@ -55,9 +43,6 @@ export class JsonStorage<T> {
     }
   }
 
-  /**
-   * Update data using a callback function
-   */
   async update(callback: (data: T | null) => T): Promise<boolean> {
     try {
       const currentData = await this.read();
@@ -69,9 +54,6 @@ export class JsonStorage<T> {
     }
   }
 
-  /**
-   * Check if file exists
-   */
   exists(): boolean {
     return existsSync(this.filePath);
   }

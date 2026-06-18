@@ -2,13 +2,7 @@ import { mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import logger from '../utils/logger.js';
 
-/**
- * File manager for handling directory creation and file operations
- */
 export class FileManager {
-  /**
-   * Ensure a directory exists, create it if it doesn't
-   */
   static async ensureDir(dirPath: string): Promise<void> {
     try {
       if (!existsSync(dirPath)) {
@@ -21,9 +15,6 @@ export class FileManager {
     }
   }
 
-  /**
-   * Initialize all required directories
-   */
   static async initializeDirectories(): Promise<void> {
     const directories = [
       './data',
@@ -41,9 +32,6 @@ export class FileManager {
     }
   }
 
-  /**
-   * Initialize all required data files with default values
-   */
   static async initializeDataFiles(): Promise<void> {
     const { writeFile } = await import('fs/promises');
     

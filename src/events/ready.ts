@@ -6,38 +6,27 @@ import { pathToFileURL } from 'url';
 import logger from '../utils/logger.js';
 import { FileManager } from '../storage/FileManager.js';
 
-/**
- * Ready event handler
- * Initializes the bot and registers commands
- */
 export default async function ready(client: Client) {
   logger.info(`Logged in as ${client.user?.tag}!`);
   logger.info(`Bot is ready in ${client.guilds.cache.size} guilds`);
 
-  // Initialize directories and data files
   await FileManager.initializeDirectories();
   await FileManager.initializeDataFiles();
 
-  // Register commands
   await registerCommands(client);
 
   logger.info('Bot initialization complete');
 }
 
-/**
- * Register all slash commands
- */
 async function registerCommands(client: Client) {
   const commands = [];
   
-  // Load command files
   const commandsPath = join(process.cwd(), 'src', 'commands');
   const commandFolders = readdirSync(commandsPath, { recursive: true }) as string[];
 
   for (const folder of commandFolders) {
     const folderPath = join(commandsPath, folder);
     
-    // Skip if it's not a directory
     const { statSync } = await import('fs');
     try {
       if (!statSync(folderPath).isDirectory()) continue;
@@ -61,7 +50,6 @@ async function registerCommands(client: Client) {
     }
   }
 
-  // Register commands with Discord
   const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN!);
   
   try {

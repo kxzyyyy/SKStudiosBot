@@ -3,9 +3,6 @@ import { reviewSchema } from '../../utils/validation.js';
 import { z } from 'zod';
 import logger from '../../utils/logger.js';
 
-/**
- * Review interface
- */
 export interface Review {
   userId: string;
   username: string;
@@ -16,9 +13,6 @@ export interface Review {
   developer?: string;
 }
 
-/**
- * Service for managing reviews
- */
 export class ReviewService {
   private storage: JsonStorage<Review[]>;
 
@@ -26,25 +20,16 @@ export class ReviewService {
     this.storage = new JsonStorage<Review[]>('./data/reviews.json', z.array(reviewSchema));
   }
 
-  /**
-   * Get all reviews
-   */
   async getAllReviews(): Promise<Review[]> {
     const reviews = await this.storage.read();
     return reviews || [];
   }
 
-  /**
-   * Get reviews for a specific user
-   */
   async getUserReviews(userId: string): Promise<Review[]> {
     const reviews = await this.getAllReviews();
     return reviews.filter(r => r.userId === userId);
   }
 
-  /**
-   * Create a new review
-   */
   async createReview(userId: string, username: string, rating: number, review: string, serviceType?: string, developer?: string): Promise<Review> {
     const newReview: Review = {
       userId,
@@ -65,9 +50,6 @@ export class ReviewService {
     return newReview;
   }
 
-  /**
-   * Get review statistics
-   */
   async getReviewStats(): Promise<{
     totalReviews: number;
     averageRating: number;
@@ -98,9 +80,6 @@ export class ReviewService {
     };
   }
 
-  /**
-   * Get recent reviews
-   */
   async getRecentReviews(limit: number = 10): Promise<Review[]> {
     const reviews = await this.getAllReviews();
     return reviews
@@ -108,9 +87,6 @@ export class ReviewService {
       .slice(0, limit);
   }
 
-  /**
-   * Delete a review (by user ID and date)
-   */
   async deleteReview(userId: string, date: string): Promise<boolean> {
     return await this.storage.update((reviews) => {
       if (!reviews) return [];

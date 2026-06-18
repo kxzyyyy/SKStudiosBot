@@ -88,7 +88,6 @@ export default {
       }
 
       if (Object.keys(updates).length === 0) {
-        // Show current configuration
         const config = await configService.getConfig();
         const embed = {
           title: '⚙️ Current Configuration',

@@ -8,7 +8,6 @@ export default {
   customId: 'reopenTicket',
 
   async execute(interaction: ButtonInteraction) {
-    // Check if user has staff permissions
     if (!interaction.member || !(interaction.member instanceof GuildMember)) {
       await interaction.reply({
         embeds: [createErrorEmbed('Error', 'This action can only be used in a server.')],
@@ -31,7 +30,6 @@ export default {
     try {
       const ticketService = new TicketService();
 
-      // Get the ticket
       const ticket = await ticketService.getTicketByChannelId(interaction.channelId);
       
       if (!ticket) {
@@ -48,7 +46,6 @@ export default {
         return;
       }
 
-      // Reopen the ticket
       await ticketService.reopenTicket(interaction.channelId);
 
       await interaction.editReply({

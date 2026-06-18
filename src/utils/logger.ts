@@ -2,12 +2,6 @@ import winston from 'winston';
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 
-/**
- * Winston logger configuration
- * Logs to console and file with different levels
- */
-
-// Ensure logs directory exists
 const logsDir = './logs';
 if (!existsSync(logsDir)) {
   mkdir(logsDir, { recursive: true }).catch(console.error);
@@ -36,23 +30,20 @@ const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: logFormat,
   transports: [
-    // Write all logs to combined.log
-    new winston.transports.File({ 
+    new winston.transports.File({
       filename: './logs/combined.log',
-      maxsize: 5242880, // 5MB
+      maxsize: 5242880,
       maxFiles: 5
     }),
-    // Write error logs to error.log
-    new winston.transports.File({ 
-      filename: './logs/error.log', 
+    new winston.transports.File({
+      filename: './logs/error.log',
       level: 'error',
-      maxsize: 5242880, // 5MB
+      maxsize: 5242880,
       maxFiles: 5
     }),
   ],
 });
 
-// If we're not in production, log to the console
 if (process.env.NODE_ENV !== 'production') {
   logger.add(new winston.transports.Console({
     format: consoleFormat

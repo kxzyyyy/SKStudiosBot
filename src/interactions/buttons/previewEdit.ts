@@ -7,7 +7,6 @@ export default {
 
   async execute(interaction: ButtonInteraction) {
     try {
-      // Get the existing embed data from the message
       const message = interaction.message;
       const embed = message.embeds[0];
 
@@ -19,7 +18,6 @@ export default {
         return;
       }
 
-      // Create the modal with existing values
       const modal = new ModalBuilder()
         .setCustomId('embedModal')
         .setTitle('Edit Embed');

@@ -4,32 +4,23 @@ import { readdirSync } from 'fs';
 import { join } from 'path';
 import { pathToFileURL } from 'url';
 
-/**
- * Interaction create event handler
- * Handles all interactions (slash commands, buttons, modals, select menus)
- */
 export default async function interactionCreate(interaction: Interaction, client: Client) {
   try {
-    // Handle slash commands
     if (interaction.isChatInputCommand()) {
       await handleSlashCommand(interaction, client);
     }
-    // Handle button interactions
     else if (interaction.isButton()) {
       await handleButtonInteraction(interaction);
     }
-    // Handle modal submissions
     else if (interaction.isModalSubmit()) {
       await handleModalSubmit(interaction);
     }
-    // Handle select menu interactions
     else if (interaction.isStringSelectMenu()) {
       await handleSelectMenu(interaction);
     }
   } catch (error) {
     logger.error('Error handling interaction:', error);
     
-    // Reply to user if interaction hasn't been replied to yet
     if (!interaction.replied && !interaction.deferred) {
       try {
         await interaction.reply({
@@ -37,20 +28,15 @@ export default async function interactionCreate(interaction: Interaction, client
           ephemeral: true
         });
       } catch {
-        // Ignore if we can't reply
       }
     }
   }
 }
 
-/**
- * Handle slash commands
- */
 async function handleSlashCommand(interaction: any, client: Client) {
   const commandName = interaction.commandName;
   
   try {
-    // Find and execute the command
     const command = await loadCommand(commandName);
     
     if (!command) {
@@ -76,14 +62,10 @@ async function handleSlashCommand(interaction: any, client: Client) {
   }
 }
 
-/**
- * Handle button interactions
- */
 async function handleButtonInteraction(interaction: ButtonInteraction) {
   const customId = interaction.customId;
   
   try {
-    // Find and execute the button handler
     const handler = await loadButtonHandler(customId);
     
     if (!handler) {
@@ -109,14 +91,10 @@ async function handleButtonInteraction(interaction: ButtonInteraction) {
   }
 }
 
-/**
- * Handle modal submissions
- */
 async function handleModalSubmit(interaction: ModalSubmitInteraction) {
   const customId = interaction.customId;
   
   try {
-    // Find and execute the modal handler
     const handler = await loadModalHandler(customId);
     
     if (!handler) {
@@ -142,14 +120,10 @@ async function handleModalSubmit(interaction: ModalSubmitInteraction) {
   }
 }
 
-/**
- * Handle select menu interactions
- */
 async function handleSelectMenu(interaction: StringSelectMenuInteraction) {
   const customId = interaction.customId;
   
   try {
-    // Find and execute the select menu handler
     const handler = await loadSelectMenuHandler(customId);
     
     if (!handler) {
@@ -175,9 +149,6 @@ async function handleSelectMenu(interaction: StringSelectMenuInteraction) {
   }
 }
 
-/**
- * Load a command by name
- */
 async function loadCommand(commandName: string) {
   const commandsPath = join(process.cwd(), 'src', 'commands');
   const commandFolders = readdirSync(commandsPath, { recursive: true }) as string[];
@@ -210,9 +181,6 @@ async function loadCommand(commandName: string) {
   return null;
 }
 
-/**
- * Load a button handler by custom ID
- */
 async function loadButtonHandler(customId: string) {
   const buttonsPath = join(process.cwd(), 'src', 'interactions', 'buttons');
   const buttonFiles = readdirSync(buttonsPath).filter(file => file.endsWith('.ts') && !file.startsWith('.'));
@@ -232,9 +200,6 @@ async function loadButtonHandler(customId: string) {
   return null;
 }
 
-/**
- * Load a modal handler by custom ID
- */
 async function loadModalHandler(customId: string) {
   const modalsPath = join(process.cwd(), 'src', 'interactions', 'modals');
   const modalFiles = readdirSync(modalsPath).filter(file => file.endsWith('.ts') && !file.startsWith('.'));
@@ -254,9 +219,6 @@ async function loadModalHandler(customId: string) {
   return null;
 }
 
-/**
- * Load a select menu handler by custom ID
- */
 async function loadSelectMenuHandler(customId: string) {
   const selectMenusPath = join(process.cwd(), 'src', 'interactions', 'selectmenus');
   const selectMenuFiles = readdirSync(selectMenusPath).filter(file => file.endsWith('.ts') && !file.startsWith('.'));

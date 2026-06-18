@@ -22,14 +22,12 @@ export default {
         return;
       }
 
-      // Create the review embed
       const embed = new EmbedBuilder()
         .setTitle('⭐ Leave a Review')
         .setDescription('How was your experience with our service?\n\nClick the button below to leave a review!')
         .setColor('#ffcc00')
         .setTimestamp();
 
-      // Create the review button
       const row = new ActionRowBuilder<ButtonBuilder>()
         .addComponents(
           new ButtonBuilder()

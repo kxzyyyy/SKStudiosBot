@@ -1,15 +1,7 @@
 import { GuildMember, PermissionResolvable, ChatInputCommandInteraction } from 'discord.js';
 import { ConfigService } from '../services/config/ConfigService.js';
 
-/**
- * Permission utilities for checking user roles and permissions
- */
-
-/**
- * Check if a user has staff role
- */
 export async function isStaff(member: GuildMember): Promise<boolean> {
-  // Server owners always have staff permissions
   if (member.id === member.guild.ownerId) {
     return true;
   }
@@ -24,30 +16,18 @@ export async function isStaff(member: GuildMember): Promise<boolean> {
   return member.roles.cache.has(config.staffRoleId);
 }
 
-/**
- * Check if user has specific permissions
- */
 export function hasPermission(member: GuildMember, permissions: PermissionResolvable): boolean {
   return member.permissions.has(permissions);
 }
 
-/**
- * Check if user can manage tickets (staff only)
- */
 export async function canManageTickets(member: GuildMember): Promise<boolean> {
   return await isStaff(member);
 }
 
-/**
- * Check if user can use admin commands
- */
 export async function isAdmin(member: GuildMember): Promise<boolean> {
   return await isStaff(member);
 }
 
-/**
- * Require staff permission for command execution
- */
 export async function requireStaff(interaction: ChatInputCommandInteraction): Promise<boolean> {
   if (!interaction.member || !(interaction.member instanceof GuildMember)) {
     await interaction.reply({

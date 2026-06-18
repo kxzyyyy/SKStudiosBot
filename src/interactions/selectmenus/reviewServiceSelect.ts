@@ -1,7 +1,6 @@
 import { StringSelectMenuInteraction } from 'discord.js';
 import logger from '../../utils/logger.js';
 
-// Temporary storage for review selections
 const reviewSelections = new Map<string, { serviceType?: string; developer?: string }>();
 
 export default {
@@ -12,7 +11,6 @@ export default {
       const serviceType = interaction.values[0];
       const userId = interaction.user.id;
 
-      // Store the service type selection
       const currentSelections = reviewSelections.get(userId) || {};
       reviewSelections.set(userId, { ...currentSelections, serviceType });
 

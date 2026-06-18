@@ -10,7 +10,6 @@ export default {
       const developer = interaction.values[0];
       const userId = interaction.user.id;
 
-      // Store the developer selection
       const currentSelections = reviewSelections.get(userId) || {};
       reviewSelections.set(userId, { ...currentSelections, developer });
 

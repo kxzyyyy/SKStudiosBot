@@ -10,7 +10,6 @@ export default {
   customId: 'closeTicket',
 
   async execute(interaction: ButtonInteraction) {
-    // Check if user has staff permissions
     if (!interaction.member || !(interaction.member instanceof GuildMember)) {
       await interaction.reply({
         embeds: [createErrorEmbed('Error', 'This action can only be used in a server.')],
@@ -35,7 +34,6 @@ export default {
       const transcriptService = new TranscriptService();
       const configService = new ConfigService();
 
-      // Get the ticket
       const ticket = await ticketService.getTicketByChannelId(interaction.channelId);
       
       if (!ticket) {
@@ -52,14 +50,12 @@ export default {
         return;
       }
 
-      // Generate transcript (optional - don't fail if it errors)
       const channel = interaction.channel;
       let transcriptPath: string | null = null;
       
       try {
         transcriptPath = await transcriptService.generateAndSave(channel, ticket.ticketNumber);
 
-        // Get transcript archive channel
         const transcriptChannelId = await configService.getTranscriptChannelId();
         const transcriptChannel = interaction.guild?.channels.cache.get(transcriptChannelId);
 
@@ -80,7 +76,6 @@ export default {
         transcriptPath = null;
       }
 
-      // Close the ticket
       await ticketService.closeTicket(interaction.channelId, transcriptPath);
 
       const closeMessage = transcriptPath 
@@ -91,17 +86,14 @@ export default {
         embeds: [createSuccessEmbed('Ticket Closed', closeMessage)]
       });
 
-      // Move to closed category or delete channel
       const closedTicketCategoryId = await configService.getClosedTicketCategoryId();
       
       if (closedTicketCategoryId) {
-        // Move to closed category and remove user access
         setTimeout(async () => {
           try {
             const closedCategory = interaction.guild?.channels.cache.get(closedTicketCategoryId);
             if (closedCategory && channel) {
               await channel.setParent(closedTicketCategoryId);
-              // Remove user's access, keep staff and bot
               const staffRoleId = await configService.getStaffRoleId();
               await channel.permissionOverwrites.edit(ticket.userId, { ViewChannel: false });
               await channel.permissionOverwrites.edit(staffRoleId, { ViewChannel: true, SendMessages: true, ReadMessageHistory: true });
@@ -113,7 +105,6 @@ export default {
           }
         }, 2000);
       } else {
-        // Delete the channel after a short delay
         setTimeout(async () => {
           try {
             await channel.delete();

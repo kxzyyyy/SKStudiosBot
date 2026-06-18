@@ -2,16 +2,10 @@ import { JsonStorage } from '../../storage/JsonStorage.js';
 import { counterSchema } from '../../utils/validation.js';
 import logger from '../../utils/logger.js';
 
-/**
- * Counter interface
- */
 export interface Counter {
   ticketNumber: number;
 }
 
-/**
- * Service for managing ticket numbering
- */
 export class TicketNumberService {
   private storage: JsonStorage<Counter>;
 
@@ -19,17 +13,11 @@ export class TicketNumberService {
     this.storage = new JsonStorage<Counter>('./data/counters.json', counterSchema);
   }
 
-  /**
-   * Get current ticket number
-   */
   async getCurrentTicketNumber(): Promise<number> {
     const counter = await this.storage.read();
     return counter?.ticketNumber || 0;
   }
 
-  /**
-   * Increment ticket number
-   */
   async incrementTicketNumber(): Promise<number> {
     const newNumber = await this.storage.update((current) => {
       const currentNumber = current?.ticketNumber || 0;
@@ -45,9 +33,6 @@ export class TicketNumberService {
     throw new Error('Failed to increment ticket number');
   }
 
-  /**
-   * Reset ticket number (use with caution)
-   */
   async resetTicketNumber(): Promise<boolean> {
     const result = await this.storage.write({ ticketNumber: 0 });
     if (result) {
@@ -56,9 +41,6 @@ export class TicketNumberService {
     return result;
   }
 
-  /**
-   * Format ticket number with leading zeros (e.g., 0001)
-   */
   formatTicketNumber(number: number): string {
     return number.toString().padStart(4, '0');
   }

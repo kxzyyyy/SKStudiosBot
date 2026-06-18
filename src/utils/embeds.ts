@@ -1,12 +1,5 @@
 import { EmbedBuilder, ColorResolvable } from 'discord.js';
 
-/**
- * Embed utilities for creating consistent Discord embeds
- */
-
-/**
- * Create a success embed
- */
 export function createSuccessEmbed(title: string, description?: string): EmbedBuilder {
   return new EmbedBuilder()
     .setTitle(title)
@@ -15,9 +8,6 @@ export function createSuccessEmbed(title: string, description?: string): EmbedBu
     .setTimestamp();
 }
 
-/**
- * Create an error embed
- */
 export function createErrorEmbed(title: string, description?: string): EmbedBuilder {
   return new EmbedBuilder()
     .setTitle(title)
@@ -26,9 +16,6 @@ export function createErrorEmbed(title: string, description?: string): EmbedBuil
     .setTimestamp();
 }
 
-/**
- * Create an info embed
- */
 export function createInfoEmbed(title: string, description?: string): EmbedBuilder {
   return new EmbedBuilder()
     .setTitle(title)
@@ -37,9 +24,6 @@ export function createInfoEmbed(title: string, description?: string): EmbedBuild
     .setTimestamp();
 }
 
-/**
- * Create a warning embed
- */
 export function createWarningEmbed(title: string, description?: string): EmbedBuilder {
   return new EmbedBuilder()
     .setTitle(title)
@@ -48,9 +32,6 @@ export function createWarningEmbed(title: string, description?: string): EmbedBu
     .setTimestamp();
 }
 
-/**
- * Create a custom embed with all options
- */
 export function createCustomEmbed(options: {
   title?: string;
   description?: string;

@@ -11,7 +11,6 @@ export default {
       const configService = new ConfigService();
       const developers = await configService.getDevelopers();
 
-      // Create service type select menu
       const serviceSelect = new StringSelectMenuBuilder()
         .setCustomId('reviewServiceSelect')
         .setPlaceholder('Select the service you used')
@@ -28,7 +27,6 @@ export default {
             .setEmoji('🛒')
         );
 
-      // Create developer select menu
       const developerSelect = new StringSelectMenuBuilder()
         .setCustomId('reviewDeveloperSelect')
         .setPlaceholder('Select the developer');
@@ -42,7 +40,6 @@ export default {
         );
       });
 
-      // Create submit button
       const submitButton = new ButtonBuilder()
         .setCustomId('reviewSubmit')
         .setLabel('Create Review')

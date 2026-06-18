@@ -16,7 +16,6 @@ export default {
       const ticketNumberService = new TicketNumberService();
       const configService = new ConfigService();
 
-      // Check if user has open tickets
       const openTickets = await ticketService.getUserOpenTickets(interaction.user.id);
       if (openTickets.length > 0) {
         await interaction.editReply({
@@ -25,7 +24,6 @@ export default {
         return;
       }
 
-      // Get configuration
       const ticketCategoryId = await configService.getTicketCategoryId();
       const staffRoleId = await configService.getStaffRoleId();
 
@@ -36,11 +34,9 @@ export default {
         return;
       }
 
-      // Get ticket number
       const ticketNumber = await ticketNumberService.getCurrentTicketNumber() + 1;
       const formattedNumber = ticketNumberService.formatTicketNumber(ticketNumber);
 
-      // Create ticket channel
       const channelName = `${interaction.user.username}-${formattedNumber}`;
       const ticketChannel = await interaction.guild?.channels.create({
         name: channelName,
@@ -70,22 +66,18 @@ export default {
         throw new Error('Failed to create ticket channel');
       }
 
-      // Extract service type from customId if present
       const serviceType = interaction.customId.startsWith('openTicket_') 
         ? interaction.customId.replace('openTicket_', '')
         : undefined;
 
-      // Save ticket to storage with service type
       await ticketService.createTicket(interaction.user.id, ticketChannel.id, serviceType);
 
-      // Create ticket embed with service type and instructions
       const serviceInfo = serviceType ? `\n**Service:** ${serviceType}` : '';
       const embed = createSuccessEmbed(
         `🎫 Ticket #${formattedNumber}`,
         `Welcome to your ticket, ${interaction.user}!\n\n ${serviceInfo}\n\nPlease refer to <#1516551403919642725> and disclose your project details below.`
       );
 
-      // Create action buttons
       const row = new ActionRowBuilder<ButtonBuilder>()
         .addComponents(
           new ButtonBuilder()

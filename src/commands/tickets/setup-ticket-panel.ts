@@ -52,7 +52,6 @@ export default {
     ),
 
   async execute(interaction: any) {
-    // Check if user has staff permissions
     const hasPermission = await requireStaff(interaction);
     if (!hasPermission) return;
 
@@ -69,7 +68,6 @@ export default {
         return;
       }
 
-      // Get the panel channel
       const panelChannel = interaction.guild?.channels.cache.get(config.ticketPanelChannelId);
       
       if (!panelChannel || panelChannel.type !== ChannelType.GuildText) {
@@ -79,18 +77,16 @@ export default {
         return;
       }
 
-      // Get custom options or use defaults
       const title = interaction.options.getString('title') || '🎫 Order Services';
       const description = interaction.options.getString('description') || 'Click a button below to order a service.\n\nOur team will get back to you shortly!';
 
-      // Get service button names
       const serviceNames = [
         interaction.options.getString('service_1_name'),
         interaction.options.getString('service_2_name'),
         interaction.options.getString('service_3_name'),
         interaction.options.getString('service_4_name'),
         interaction.options.getString('service_5_name')
-      ].filter(Boolean); // Remove null/undefined values
+      ].filter(Boolean);
 
       if (serviceNames.length === 0) {
         await interaction.editReply({
@@ -99,7 +95,6 @@ export default {
         return;
       }
 
-      // Create the ticket panel embed
       const guild = interaction.guild;
       const embed = new EmbedBuilder()
         .setTitle(title)
@@ -109,7 +104,6 @@ export default {
         .setFooter({ text: guild?.name || 'Order System' })
         .setTimestamp();
 
-      // Create action rows for buttons (max 5 buttons per row)
       const rows: ActionRowBuilder<ButtonBuilder>[] = [];
       const buttons: ButtonBuilder[] = [];
 
@@ -122,14 +116,12 @@ export default {
         
         buttons.push(button);
 
-        // Create a new row every 5 buttons
         if (buttons.length === 5 || index === serviceNames.length - 1) {
           rows.push(new ActionRowBuilder<ButtonBuilder>().addComponents(...buttons));
-          buttons.length = 0; // Clear the array
+          buttons.length = 0;
         }
       });
 
-      // Send the panel
       await panelChannel.send({
         embeds: [embed],
         components: rows

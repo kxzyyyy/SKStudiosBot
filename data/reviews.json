@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "userId": "1305213598867652670",
+    "username": "kxzy.",
+    "rating": 5,
+    "review": "Great service!",
+    "date": "2026-06-18T02:17:23.558Z",
+    "serviceType": "Discord Bot",
+    "developer": "Kxzy"
+  }
+]

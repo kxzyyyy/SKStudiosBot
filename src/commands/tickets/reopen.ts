@@ -10,7 +10,6 @@ export default {
     .setDescription('Reopen a closed ticket'),
 
   async execute(interaction: any) {
-    // Check if user has staff permissions
     const hasPermission = await requireStaff(interaction);
     if (!hasPermission) return;
 
@@ -19,7 +18,6 @@ export default {
     try {
       const ticketService = new TicketService();
 
-      // Get the ticket
       const ticket = await ticketService.getTicketByChannelId(interaction.channelId);
       
       if (!ticket) {
@@ -36,7 +34,6 @@ export default {
         return;
       }
 
-      // Reopen the ticket
       await ticketService.reopenTicket(interaction.channelId);
 
       await interaction.editReply({

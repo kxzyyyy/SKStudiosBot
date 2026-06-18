@@ -12,7 +12,6 @@ export default {
     .setDescription('Get information about the current ticket'),
 
   async execute(interaction: any) {
-    // Check if user has staff permissions
     const hasPermission = await requireStaff(interaction);
     if (!hasPermission) return;
 
@@ -22,7 +21,6 @@ export default {
       const ticketService = new TicketService();
       const configService = new ConfigService();
 
-      // Get the ticket
       const ticket = await ticketService.getTicketByChannelId(interaction.channelId);
       
       if (!ticket) {
@@ -32,13 +30,11 @@ export default {
         return;
       }
 
-      // Get user info
       const user = await interaction.client.users.fetch(ticket.userId);
       const guild = interaction.guild;
       const staffRoleId = await configService.getStaffRoleId();
       const staffRole = guild?.roles.cache.get(staffRoleId);
 
-      // Create info embed
       const embed = new EmbedBuilder()
         .setTitle(`🎫 Ticket #${ticket.ticketNumber}`)
         .setColor(ticket.status === 'open' ? '#00ff00' : ticket.status === 'claimed' ? '#ffcc00' : '#ff0000')

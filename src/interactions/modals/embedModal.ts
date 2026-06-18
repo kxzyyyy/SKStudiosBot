@@ -4,7 +4,6 @@ import { validateUrl } from '../../utils/validation.js';
 import { createErrorEmbed } from '../../utils/embeds.js';
 import logger from '../../utils/logger.js';
 
-// Store embed data temporarily for preview/edit functionality
 const embedDataStore = new Map<string, any>();
 
 export default {
@@ -20,7 +19,6 @@ export default {
       const thumbnail = interaction.fields.getTextInputValue('thumbnail');
       const image = interaction.fields.getTextInputValue('image');
 
-      // Validate URLs if provided
       if (thumbnail && !validateUrl(thumbnail)) {
         await interaction.editReply({
           embeds: [createErrorEmbed('Error', 'Invalid thumbnail URL.')]
@@ -35,7 +33,6 @@ export default {
         return;
       }
 
-      // Create the embed
       const embed = new EmbedBuilder()
         .setTitle(title)
         .setDescription(description)
@@ -45,7 +42,6 @@ export default {
       if (thumbnail) embed.setThumbnail(thumbnail);
       if (image) embed.setImage(image);
 
-      // Store embed data
       const embedId = Date.now().toString();
       embedDataStore.set(embedId, {
         title,
@@ -55,7 +51,6 @@ export default {
         image
       });
 
-      // Create action buttons
       const row = new ActionRowBuilder<ButtonBuilder>()
         .addComponents(
           new ButtonBuilder()

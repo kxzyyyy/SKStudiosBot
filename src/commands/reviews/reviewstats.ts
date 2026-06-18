@@ -10,7 +10,6 @@ export default {
     .setDescription('View review statistics'),
 
   async execute(interaction: any) {
-    // Check if user has staff permissions
     const hasPermission = await requireStaff(interaction);
     if (!hasPermission) return;
 
@@ -20,7 +19,6 @@ export default {
       const reviewService = new ReviewService();
       const stats = await reviewService.getReviewStats();
 
-      // Create stats embed
       const embed = new EmbedBuilder()
         .setTitle('📊 Review Statistics')
         .setColor('#0099ff')

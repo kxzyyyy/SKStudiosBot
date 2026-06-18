@@ -17,7 +17,6 @@ export default {
       const serviceType = interaction.fields.getTextInputValue('serviceType');
       const developer = interaction.fields.getTextInputValue('developer');
 
-      // Validate rating
       const ratingNum = parseInt(rating);
       if (!validateRating(ratingNum)) {
         await interaction.editReply({
@@ -26,7 +25,6 @@ export default {
         return;
       }
 
-      // Validate review text
       if (!validateReviewText(review)) {
         await interaction.editReply({
           embeds: [createErrorEmbed('Error', 'Review must be between 10 and 1000 characters.')]
@@ -34,7 +32,6 @@ export default {
         return;
       }
 
-      // Save review with service type and developer
       const reviewService = new ReviewService();
       await reviewService.createReview(
         interaction.user.id,
@@ -45,13 +42,11 @@ export default {
         developer || undefined
       );
 
-      // Get review channel and developer info
       const configService = new ConfigService();
       const reviewChannelId = await configService.getReviewChannelId();
       const developers = await configService.getDevelopers();
       const reviewChannel = interaction.guild?.channels.cache.get(reviewChannelId);
 
-      // Get developer user ID for tagging
       let developerMention = '';
       if (developer) {
         const devInfo = developers.find(d => d.name === developer);
@@ -61,7 +56,6 @@ export default {
       }
 
       if (reviewChannel && reviewChannel.isTextBased()) {
-        // Create review embed with service type and developer mention
         const stars = '⭐'.repeat(ratingNum);
         const serviceInfo = serviceType ? `\n**Service:** ${serviceType}` : '';
         const developerInfo = developer ? `\n**Developer:** ${developerMention || developer}` : '';

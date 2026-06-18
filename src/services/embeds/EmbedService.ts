@@ -2,9 +2,6 @@ import { JsonStorage } from '../../storage/JsonStorage.js';
 import { embedTemplateSchema } from '../../utils/validation.js';
 import logger from '../../utils/logger.js';
 
-/**
- * Embed template interface
- */
 export interface EmbedTemplate {
   id: string;
   name: string;
@@ -17,9 +14,6 @@ export interface EmbedTemplate {
   createdAt: string;
 }
 
-/**
- * Service for managing embed templates
- */
 export class EmbedService {
   private storage: JsonStorage<EmbedTemplate[]>;
 
@@ -27,25 +21,16 @@ export class EmbedService {
     this.storage = new JsonStorage<EmbedTemplate[]>('./data/embeds.json', z.array(embedTemplateSchema));
   }
 
-  /**
-   * Get all embed templates
-   */
   async getAllTemplates(): Promise<EmbedTemplate[]> {
     const templates = await this.storage.read();
     return templates || [];
   }
 
-  /**
-   * Get template by ID
-   */
   async getTemplateById(id: string): Promise<EmbedTemplate | null> {
     const templates = await this.getAllTemplates();
     return templates.find(t => t.id === id) || null;
   }
 
-  /**
-   * Create a new embed template
-   */
   async createTemplate(
     name: string,
     title: string,
@@ -76,9 +61,6 @@ export class EmbedService {
     return newTemplate;
   }
 
-  /**
-   * Update a template
-   */
   async updateTemplate(
     id: string,
     updates: Partial<Omit<EmbedTemplate, 'id' | 'createdAt'>>
@@ -96,9 +78,6 @@ export class EmbedService {
     });
   }
 
-  /**
-   * Delete a template
-   */
   async deleteTemplate(id: string): Promise<boolean> {
     return await this.storage.update((templates) => {
       if (!templates) return [];
@@ -111,9 +90,6 @@ export class EmbedService {
     });
   }
 
-  /**
-   * Generate a unique ID for templates
-   */
   generateId(): string {
     return Date.now().toString() + Math.random().toString(36).substr(2, 9);
   }

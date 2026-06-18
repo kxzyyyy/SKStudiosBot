@@ -9,7 +9,6 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     try {
-      // Get the embed from the message
       const message = interaction.message;
       const embed = message.embeds[0];
 
@@ -20,7 +19,6 @@ export default {
         return;
       }
 
-      // Send the embed to the current channel
       const channel = interaction.channel;
       if (!channel || !channel.isTextBased()) {
         await interaction.editReply({
@@ -31,7 +29,6 @@ export default {
 
       await channel.send({ embeds: [embed] });
 
-      // Delete the preview message
       await message.delete();
 
       await interaction.editReply({
