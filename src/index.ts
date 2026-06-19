@@ -4,6 +4,8 @@ import logger from './utils/logger.js';
 import ready from './events/ready.js';
 import interactionCreate from './events/interactionCreate.js';
 import guildCreate from './events/guildCreate.js';
+import guildMemberAdd from './events/guildMemberAdd.js';
+import guildMemberRemove from './events/guildMemberRemove.js';
 
 dotenv.config();
 
@@ -33,6 +35,8 @@ const client = new Client({
 client.once('ready', () => ready(client));
 client.on('interactionCreate', (interaction) => interactionCreate(interaction, client));
 client.on('guildCreate', (guild) => guildCreate(guild));
+client.on('guildMemberAdd', (member) => guildMemberAdd(member));
+client.on('guildMemberRemove', (member) => guildMemberRemove(member as any));
 
 client.on('error', (error) => {
   logger.error('Discord client error:', error);

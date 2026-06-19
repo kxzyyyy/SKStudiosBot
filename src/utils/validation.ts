@@ -29,6 +29,17 @@ export const configSchema = z.object({
   staffRoleId: z.string(),
   ticketPanelChannelId: z.string(),
   closedTicketCategoryId: z.string(),
+  autoroleId: z.string(),
+  welcomeChannelId: z.string(),
+  welcomeTitle: z.string(),
+  welcomeMessage: z.string(),
+  welcomeColor: z.string(),
+  welcomeFooterImage: z.string(),
+  leaveChannelId: z.string(),
+  leaveTitle: z.string(),
+  leaveMessage: z.string(),
+  leaveColor: z.string(),
+  leaveFooterImage: z.string(),
   developers: z.array(z.object({
     name: z.string(),
     id: z.string()

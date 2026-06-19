@@ -34,7 +34,7 @@ export class FileManager {
 
   static async initializeDataFiles(): Promise<void> {
     const { writeFile } = await import('fs/promises');
-    
+
     const defaultFiles = [
       {
         path: './data/config.json',
@@ -43,7 +43,18 @@ export class FileManager {
           transcriptChannelId: '',
           reviewChannelId: '',
           staffRoleId: '',
-          ticketPanelChannelId: ''
+          ticketPanelChannelId: '',
+          autoroleId: '',
+          welcomeChannelId: '',
+          welcomeTitle: 'Welcome!',
+          welcomeMessage: 'Welcome to **{server_name}**, {mention_user}! We\'re glad to have you here.',
+          welcomeColor: '#00ff00',
+          welcomeFooterImage: '',
+          leaveChannelId: '',
+          leaveTitle: 'Goodbye!',
+          leaveMessage: '**{username}** has left **{server_name}**. We\'re sorry to see you go!',
+          leaveColor: '#ff0000',
+          leaveFooterImage: ''
         }
       },
       {

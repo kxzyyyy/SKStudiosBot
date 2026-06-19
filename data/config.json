@@ -5,6 +5,17 @@
   "staffRoleId": "1516561248106320092",
   "ticketPanelChannelId": "1516551600704065708",
   "closedTicketCategoryId": "1516976266916397107",
+  "autoroleId": "1516561499416559698",
+  "welcomeChannelId": "1517336299848204408",
+  "welcomeTitle": "**Welcome!**",
+  "welcomeMessage": "Welcome to **{server_name}**! We are happy to have you {mention_user}.\n\n **{server_name}** now has {member_count} members!",
+  "welcomeColor": "#00ff00",
+  "welcomeFooterImage": "https://cdn.discordapp.com/attachments/1516977141881770065/1516977927013793802/logoskstudios.png?ex=6a35ecc9&is=6a349b49&hm=51fd7a022fcd7c5038be10040d4ac1fba82c7de2bd1b86ac5bd78250b5d88c9b&",
+  "leaveChannelId": "1517336299848204408",
+  "leaveTitle": "**Goodbye!**",
+  "leaveMessage": "{mention_user} has just left **{server_name}**. Sad to see you go! \n\n**{server_name}** now has {member_count} members.",
+  "leaveColor": "#ff0000",
+  "leaveFooterImage": "https://cdn.discordapp.com/attachments/1516977141881770065/1516977927013793802/logoskstudios.png?ex=6a35ecc9&is=6a349b49&hm=51fd7a022fcd7c5038be10040d4ac1fba82c7de2bd1b86ac5bd78250b5d88c9b&",
   "developers": [
     {
       "name": "Kxzy",

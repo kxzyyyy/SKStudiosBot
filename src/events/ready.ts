@@ -20,13 +20,13 @@ export default async function ready(client: Client) {
 
 async function registerCommands(client: Client) {
   const commands = [];
-  
+
   const commandsPath = join(process.cwd(), 'src', 'commands');
   const commandFolders = readdirSync(commandsPath, { recursive: true }) as string[];
 
   for (const folder of commandFolders) {
     const folderPath = join(commandsPath, folder);
-    
+
     const { statSync } = await import('fs');
     try {
       if (!statSync(folderPath).isDirectory()) continue;
@@ -35,7 +35,7 @@ async function registerCommands(client: Client) {
     }
 
     const commandFiles = readdirSync(folderPath).filter(file => file.endsWith('.ts') && !file.startsWith('.'));
-    
+
     for (const file of commandFiles) {
       const filePath = join(folderPath, file);
       try {
@@ -51,10 +51,10 @@ async function registerCommands(client: Client) {
   }
 
   const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN!);
-  
+
   try {
     logger.info(`Started refreshing ${commands.length} application (/) commands.`);
-    
+
     const guildId = process.env.GUILD_ID;
     const clientId = process.env.CLIENT_ID;
 
@@ -62,13 +62,21 @@ async function registerCommands(client: Client) {
       throw new Error('GUILD_ID or CLIENT_ID not set in environment variables');
     }
 
+    if (guildId === clientId) {
+      throw new Error('GUILD_ID and CLIENT_ID are the same. GUILD_ID must be your Discord server ID, not the bot application ID. Please update your .env file.');
+    }
+
     await rest.put(
-      Routes.applicationGuildCommands(clientId, guildId),
-      { body: commands }
+        Routes.applicationGuildCommands(clientId, guildId),
+        { body: commands }
     );
 
     logger.info(`Successfully reloaded ${commands.length} application (/) commands.`);
-  } catch (error) {
-    logger.error('Error registering commands:', error);
+  } catch (error: any) {
+    if (error?.code === 50001) {
+      logger.error('Missing Access: The bot lacks the "applications.commands" OAuth2 scope. Re-invite the bot with both "bot" and "applications.commands" scopes from the Discord Developer Portal.');
+    } else {
+      logger.error('Error registering commands:', error);
+    }
   }
 }

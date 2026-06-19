@@ -5,3 +5,4 @@ logs/
 transcripts/
 *.log
 .DS_Store
+data/

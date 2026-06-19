@@ -37,7 +37,12 @@ export default {
       const ticketNumber = await ticketNumberService.getCurrentTicketNumber() + 1;
       const formattedNumber = ticketNumberService.formatTicketNumber(ticketNumber);
 
-      const channelName = `${interaction.user.username}-${formattedNumber}`;
+      const serviceType = interaction.customId.startsWith('openTicket_')
+          ? interaction.customId.replace('openTicket_', '')
+          : undefined;
+
+      const serviceLabel = serviceType ? serviceType.toLowerCase().replace(/\s+/g, '-') : 'general';
+      const channelName = `${serviceLabel}-${interaction.user.username}-${formattedNumber}`;
       const ticketChannel = await interaction.guild?.channels.create({
         name: channelName,
         type: ChannelType.GuildText,
@@ -66,31 +71,27 @@ export default {
         throw new Error('Failed to create ticket channel');
       }
 
-      const serviceType = interaction.customId.startsWith('openTicket_') 
-        ? interaction.customId.replace('openTicket_', '')
-        : undefined;
-
       await ticketService.createTicket(interaction.user.id, ticketChannel.id, serviceType);
 
       const serviceInfo = serviceType ? `\n**Service:** ${serviceType}` : '';
       const embed = createSuccessEmbed(
-        `🎫 Ticket #${formattedNumber}`,
-        `Welcome to your ticket, ${interaction.user}!\n\n ${serviceInfo}\n\nPlease refer to <#1516551403919642725> and disclose your project details below.`
+          `🎫 Ticket #${formattedNumber}`,
+          `Welcome to your ticket, ${interaction.user}!\n\n ${serviceInfo}\n\nPlease refer to <#1516551403919642725> and disclose your project details below.`
       );
 
       const row = new ActionRowBuilder<ButtonBuilder>()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId('claimTicket')
-            .setLabel('Claim Ticket')
-            .setStyle(ButtonStyle.Success)
-            .setEmoji('✅'),
-          new ButtonBuilder()
-            .setCustomId('closeTicket')
-            .setLabel('Close Ticket')
-            .setStyle(ButtonStyle.Danger)
-            .setEmoji('🔒')
-        );
+          .addComponents(
+              new ButtonBuilder()
+                  .setCustomId('claimTicket')
+                  .setLabel('Claim Ticket')
+                  .setStyle(ButtonStyle.Success)
+                  .setEmoji('✅'),
+              new ButtonBuilder()
+                  .setCustomId('closeTicket')
+                  .setLabel('Close Ticket')
+                  .setStyle(ButtonStyle.Danger)
+                  .setEmoji('🔒')
+          );
 
       await ticketChannel.send({
         content: `<@${interaction.user.id}> <@&${staffRoleId}>`,

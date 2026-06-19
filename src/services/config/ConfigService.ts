@@ -8,6 +8,17 @@ export interface Config {
   staffRoleId: string;
   ticketPanelChannelId: string;
   closedTicketCategoryId: string;
+  autoroleId: string;
+  welcomeChannelId: string;
+  welcomeTitle: string;
+  welcomeMessage: string;
+  welcomeColor: string;
+  welcomeFooterImage: string;
+  leaveChannelId: string;
+  leaveTitle: string;
+  leaveMessage: string;
+  leaveColor: string;
+  leaveFooterImage: string;
   developers: Array<{ name: string; id: string }>;
 }
 
@@ -38,13 +49,13 @@ export class ConfigService {
   async isConfigured(): Promise<boolean> {
     const config = await this.storage.read();
     if (!config) return false;
-    
+
     return !!(
-      config.ticketCategoryId &&
-      config.transcriptChannelId &&
-      config.reviewChannelId &&
-      config.staffRoleId &&
-      config.ticketPanelChannelId
+        config.ticketCategoryId &&
+        config.transcriptChannelId &&
+        config.reviewChannelId &&
+        config.staffRoleId &&
+        config.ticketPanelChannelId
     );
   }
 
@@ -81,5 +92,60 @@ export class ConfigService {
   async getDevelopers(): Promise<Array<{ name: string; id: string }>> {
     const config = await this.getConfig();
     return config.developers || [];
+  }
+
+  async getAutoroleId(): Promise<string> {
+    const config = await this.getConfig();
+    return config.autoroleId;
+  }
+
+  async getWelcomeChannelId(): Promise<string> {
+    const config = await this.getConfig();
+    return config.welcomeChannelId;
+  }
+
+  async getLeaveChannelId(): Promise<string> {
+    const config = await this.getConfig();
+    return config.leaveChannelId;
+  }
+
+  async getWelcomeTitle(): Promise<string> {
+    const config = await this.getConfig();
+    return config.welcomeTitle;
+  }
+
+  async getWelcomeMessage(): Promise<string> {
+    const config = await this.getConfig();
+    return config.welcomeMessage;
+  }
+
+  async getWelcomeColor(): Promise<string> {
+    const config = await this.getConfig();
+    return config.welcomeColor;
+  }
+
+  async getWelcomeFooterImage(): Promise<string> {
+    const config = await this.getConfig();
+    return config.welcomeFooterImage;
+  }
+
+  async getLeaveTitle(): Promise<string> {
+    const config = await this.getConfig();
+    return config.leaveTitle;
+  }
+
+  async getLeaveMessage(): Promise<string> {
+    const config = await this.getConfig();
+    return config.leaveMessage;
+  }
+
+  async getLeaveColor(): Promise<string> {
+    const config = await this.getConfig();
+    return config.leaveColor;
+  }
+
+  async getLeaveFooterImage(): Promise<string> {
+    const config = await this.getConfig();
+    return config.leaveFooterImage;
   }
 }
